@@ -1,0 +1,34 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.node {
+  background: rgb(143, 143, 143);
+}
+
+
+.node.Task {
+  background: rgb(33,160,124);
+}
+
+.node.Choice {
+  background: rgb(255,125,99);
+}
+
+.node.TransitionEvent {
+  background: rgb(134,220,208);
+}
+
+.node.CatchEvent {
+  background: rgb(194,139,240);
+}
+
+.node.ChoiceEvent {
+  background: rgb(242,234,26);
+}
+
+.node.selected {
+  background: #CCC;
+}
+
