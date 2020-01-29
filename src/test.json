@@ -1,0 +1,273 @@
+{
+  "id": "states-language@0.1.0",
+  "nodes": {
+    "1": {
+      "id": 1,
+      "data": {
+        "resource": "Start:yes",
+        "name": "Start"
+      },
+      "inputs": {
+        "start": {
+          "connections": []
+        }
+      },
+      "outputs": {
+        "transition_event": {
+          "connections": [
+            {
+              "node": 2,
+              "input": "event",
+              "data": {}
+            }
+          ]
+        },
+        "catch_events": {
+          "connections": [
+            {
+              "node": 3,
+              "input": "event",
+              "data": {}
+            }
+          ]
+        }
+      },
+      "position": [
+        -731,
+        -339.86669921875
+      ],
+      "name": "Task"
+    },
+    "2": {
+      "id": 2,
+      "data": {
+        "event": ":transition"
+      },
+      "inputs": {
+        "event": {
+          "connections": [
+            {
+              "node": 1,
+              "output": "transition_event",
+              "data": {}
+            }
+          ]
+        }
+      },
+      "outputs": {
+        "next": {
+          "connections": [
+            {
+              "node": 8,
+              "input": "start",
+              "data": {}
+            }
+          ]
+        }
+      },
+      "position": [
+        -316,
+        -305.86669921875
+      ],
+      "name": "TransitionEvent"
+    },
+    "3": {
+      "id": 3,
+      "data": {
+        "errors": ":error, :another_error"
+      },
+      "inputs": {
+        "event": {
+          "connections": [
+            {
+              "node": 1,
+              "output": "catch_events",
+              "data": {}
+            }
+          ]
+        }
+      },
+      "outputs": {
+        "next": {
+          "connections": [
+            {
+              "node": 4,
+              "input": "start",
+              "data": {}
+            }
+          ]
+        }
+      },
+      "position": [
+        -326,
+        -102.86669921875
+      ],
+      "name": "CatchEvent"
+    },
+    "4": {
+      "id": 4,
+      "data": {
+        "resource": "",
+        "name": ""
+      },
+      "inputs": {
+        "start": {
+          "connections": [
+            {
+              "node": 3,
+              "output": "next",
+              "data": {}
+            }
+          ]
+        }
+      },
+      "outputs": {
+        "choice_events": {
+          "connections": [
+            {
+              "node": 5,
+              "input": "event",
+              "data": {}
+            }
+          ]
+        },
+        "catch_events": {
+          "connections": [
+            {
+              "node": 6,
+              "input": "event",
+              "data": {}
+            }
+          ]
+        }
+      },
+      "position": [
+        79,
+        -91.86669921875
+      ],
+      "name": "Choice"
+    },
+    "5": {
+      "id": 5,
+      "data": {
+        "events": ":1"
+      },
+      "inputs": {
+        "event": {
+          "connections": [
+            {
+              "node": 4,
+              "output": "choice_events",
+              "data": {}
+            }
+          ]
+        }
+      },
+      "outputs": {
+        "next": {
+          "connections": [
+            {
+              "node": 7,
+              "input": "start",
+              "data": {}
+            }
+          ]
+        }
+      },
+      "position": [
+        456,
+        -123.86669921875
+      ],
+      "name": "ChoiceEvent"
+    },
+    "6": {
+      "id": 6,
+      "data": {
+        "errors": ":error"
+      },
+      "inputs": {
+        "event": {
+          "connections": [
+            {
+              "node": 4,
+              "output": "catch_events",
+              "data": {}
+            }
+          ]
+        }
+      },
+      "outputs": {
+        "next": {
+          "connections": []
+        }
+      },
+      "position": [
+        489,
+        125.13330078125
+      ],
+      "name": "CatchEvent"
+    },
+    "7": {
+      "id": 7,
+      "data": {
+        "resource": "Redo:yes",
+        "name": "Redo"
+      },
+      "inputs": {
+        "start": {
+          "connections": [
+            {
+              "node": 5,
+              "output": "next",
+              "data": {}
+            }
+          ]
+        }
+      },
+      "outputs": {
+        "transition_event": {
+          "connections": []
+        },
+        "catch_events": {
+          "connections": []
+        }
+      },
+      "position": [
+        804,
+        -171.86669921875
+      ],
+      "name": "Task"
+    },
+    "8": {
+      "id": 8,
+      "data": {
+        "resource": "Success:finish",
+        "name": "Success"
+      },
+      "inputs": {
+        "start": {
+          "connections": [
+            {
+              "node": 2,
+              "output": "next",
+              "data": {}
+            }
+          ]
+        }
+      },
+      "outputs": {
+        "transition_event": {
+          "connections": []
+        },
+        "catch_events": {
+          "connections": []
+        }
+      },
+      "position": [
+        101,
+        -436.86669921875
+      ],
+      "name": "Task"
+    }
+  }
+}

@@ -1,5 +1,5 @@
-import React from "react";
-import Rete from "rete";
+import React from 'react';
+import Rete from 'rete';
 
 export class MyControl extends Rete.Control {
   static component = ({ value, onChange, placeholder }) => (
@@ -7,7 +7,7 @@ export class MyControl extends Rete.Control {
       value={value}
       placeholder={placeholder}
       ref={ref => {
-        ref && ref.addEventListener("pointerdown", e => e.stopPropagation());
+        ref && ref.addEventListener('pointerdown', e => e.stopPropagation());
       }}
       onChange={e => onChange(e.target.value)}
     />
@@ -19,7 +19,7 @@ export class MyControl extends Rete.Control {
     this.key = key;
     this.component = MyControl.component;
 
-    const initial = node.data[key] || "";
+    const initial = node.data[key] || '';
 
     node.data[key] = initial;
     this.props = {
@@ -27,7 +27,7 @@ export class MyControl extends Rete.Control {
       value: initial,
       onChange: v => {
         this.setValue(v);
-        this.emitter.trigger("process");
+        this.emitter.trigger('process');
       },
       placeholder: key
     };

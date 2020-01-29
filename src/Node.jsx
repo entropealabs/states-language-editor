@@ -1,5 +1,5 @@
-import React from "react";
-import { Node, Socket, Control } from "rete-react-render-plugin";
+import React from 'react';
+import { Node, Socket, Control } from 'rete-react-render-plugin';
 
 export class MyNode extends Node {
   render() {
@@ -54,4 +54,3 @@ export class MyNode extends Node {
     );
   }
 }
-
