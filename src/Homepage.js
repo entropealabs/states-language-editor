@@ -10,6 +10,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import init from './editor';
+import Graph from './Graph';
 
 const drawerWidth = 240;
 
@@ -125,7 +126,9 @@ function Homepage() {
               </Paper>
             </Grid>
             <Grid item xs={12} md={4} lg={4}>
-              <Paper className={fixedHeightPaper}></Paper>
+              <Paper className={fixedHeightPaper}>
+                <Graph />
+              </Paper>
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}></Paper>

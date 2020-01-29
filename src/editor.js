@@ -6,6 +6,9 @@ import AreaPlugin from 'rete-area-plugin';
 import { MyNode } from './Node';
 import { MyControl } from './Control';
 import graph from './test.json';
+import { editor_d3 } from './parser';
+import { doSetD3Graph } from './actions';
+import store from './store';
 
 var transition_socket = new Rete.Socket('Transition Event');
 var catch_socket = new Rete.Socket('Catch Event');
@@ -110,7 +113,7 @@ export default async function(container) {
     new ChoiceComponent(),
     new ChoiceEventComponent(),
     new CatchEventComponent(),
-    new TransitionEventComponent()
+    new TransitionEventComponent(),
   ];
 
   var editor = new Rete.NodeEditor('states-language@0.1.0', container);
@@ -120,11 +123,12 @@ export default async function(container) {
   editor.use(AreaPlugin);
 
   components.map(c => editor.register(c));
-
   editor.on(
     'process nodecreated noderemoved connectioncreated connectionremoved',
     async () => {
-      console.log(editor.toJSON());
+      let graph = editor.toJSON();
+      let d3_graph = editor_d3(graph);
+      store.dispatch(doSetD3Graph(d3_graph));
     }
   );
 

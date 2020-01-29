@@ -32,3 +32,32 @@
   background: #CCC;
 }
 
+g .label{
+  font-size: 0.875rem;
+  font-weight: normal;
+  pointer-events: none;
+}
+
+.node rect {
+	stroke: #333;
+  fill: #fff;
+  cursor: pointer;
+}
+
+.selected rect{
+	fill: #89B8D4;
+}
+
+.node rect:hover{
+  fill: #89B8D4;
+}
+
+.edgePath path {
+	stroke: #333;
+  fill: #333;
+  stroke-width: 1.5px;
+}
+
+html{
+  font-size: 0.875rem;
+}

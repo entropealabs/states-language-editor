@@ -107,8 +107,8 @@
     "4": {
       "id": 4,
       "data": {
-        "resource": "",
-        "name": ""
+        "resource": "ChoiceResource",
+        "name": "TheChoice"
       },
       "inputs": {
         "start": {
