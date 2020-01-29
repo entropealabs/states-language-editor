@@ -9,7 +9,8 @@ const App = () => (
   <div className="App">
     <Router history={history}>
       <Switch>
-        <Route exact path="/" component={Homepage} />
+        <Route path="/" component={Homepage} />
+        <Route path="/states-language-editor" component={Homepage} />
       </Switch>
     </Router>
   </div>
