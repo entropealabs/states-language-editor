@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "22e6791a234c802e3784d63797404a13",
+    "revision": "6a1c4f06a5c1fa413b07298b416ecc29",
     "url": "/states-language-editor/index.html"
   },
   {
-    "revision": "ebd9632d44371cc046db",
+    "revision": "a9c059a159f1a6f7319a",
     "url": "/states-language-editor/static/css/main.d1bf1e66.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/states-language-editor/static/js/2.523df81b.chunk.js"
   },
   {
-    "revision": "ebd9632d44371cc046db",
-    "url": "/states-language-editor/static/js/main.6c3983cd.chunk.js"
+    "revision": "a9c059a159f1a6f7319a",
+    "url": "/states-language-editor/static/js/main.b39bcfff.chunk.js"
   },
   {
     "revision": "c1cc07d966319444ce4c",
