@@ -16,7 +16,13 @@ function updateState(state, action) {
       new_state.d3_graph = action.graph;
       break;
     case 'SET_STATES_LANGUAGE_GRAPH':
-      new_state.states_language_graph = action.graph;
+      let str = '';
+      if (typeof action.graph === 'string'){
+        str = action.graph;
+      }else{
+        str = JSON.stringify(action.graph, undefined, 2);
+      }
+      new_state.states_language_graph = str;
       break;
     default:
       break;

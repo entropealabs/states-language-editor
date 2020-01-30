@@ -56,7 +56,6 @@ class ChoiceComponent extends Rete.Component {
   builder(node) {
     var inp = new Rete.Input('start', 'Start', next_socket, true);
     var ce = new Rete.Output('choice_events', 'Choice Events', choice_socket);
-    var cat_e = new Rete.Output('catch_events', 'Catch Events', catch_socket);
     var resource = new TextControl(this.editor, 'resource', node);
     var name = new TextControl(this.editor, 'name', node);
     var input_path = new TextControl(this.editor, 'input_path', node);
@@ -65,7 +64,6 @@ class ChoiceComponent extends Rete.Component {
     return node
       .addInput(inp)
       .addOutput(ce)
-      .addOutput(cat_e)
       .addControl(name)
       .addControl(resource)
       .addControl(input_path)

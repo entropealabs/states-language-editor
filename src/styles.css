@@ -15,12 +15,24 @@
   background: rgb(255,125,99);
 }
 
+.socket.transition-event {
+  background: rgb(134,220,208);
+}
+
 .node.TransitionEvent {
   background: rgb(134,220,208);
 }
 
+.socket.catch-event {
+  background: rgb(194,139,240);
+}
+
 .node.CatchEvent {
   background: rgb(194,139,240);
+}
+
+.socket.choice-event {
+  background: rgb(242,234,26);
 }
 
 .node.ChoiceEvent {
