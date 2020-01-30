@@ -1,46 +1,91 @@
 const to_states_language = (nodes, edges) => {
-  return nodes.reduce((acc, node) => {
-    let next = get_transition_event(node, edges);
-    let t_e = next ? next.type.join(',') : '';
-    let choices = get_choices(node, edges).map(choice => ({
-      StringEquals: choice.type,
-      Next: choice.target.data.name,
-    }));
-    let catches = get_catches(node, edges).map(cat => ({
-      ErrorEquals: cat.type,
-      Next: cat.target.data.name,
-    }));
-
-    acc[node.data.name] = {
-      Type: node.name,
-      Resource: node.data.resource,
-      TransitionEvent: t_e,
-      Choices: choices,
-      Catch: catches,
-      Next: next ? next.target.data.name : '',
-    };
+  return nodes.reduce((acc, node) => { 
+    acc[node.data.name] = get_states_language_state(node, edges)
     return acc;
   }, {});
+};
+
+const get_states_language_state = (node, edges) => {
+  switch (node.name) {
+    case 'Task':
+      return get_sl_task(node, edges);
+    case 'Wait':
+      return get_sl_wait(node, edges);
+    case 'Choice':
+      return get_sl_choice(node, edges);
+    default:
+      return {};
+  }
+};
+
+const get_sl_task = (node, edges) => {
+  let next = get_transition_event(node, edges);
+  let t_e = next ? next.type.join(',') : '';
+  let catches = get_catches(node, edges).map(cat => ({
+      ErrorEquals: cat.type,
+      Next: cat.target.data.name,
+  }));
+  return {
+    Type: node.name,
+    Resource: node.data.resource,
+    TransitionEvent: t_e,
+    Catch: catches,
+    InputPath: node.data.input_path,
+    OutputPath: node.data.output_path,
+    ResourcePath: node.data.resource_path,
+    Next: next ? next.target.data.name : '',
+    End: node.data.is_end,
+  }
+};
+
+const get_sl_choice = (node, edges) => {
+  let choices = get_choices(node, edges).map(choice => ({
+      StringEquals: choice.type.join(","),
+      Next: choice.target.data.name,
+  }));
+  return {
+    Type: node.name,
+    Resource: node.data.resource,
+    Choices: choices,
+    InputPath: node.data.input_path,
+    OutputPath: node.data.output_path,
+  }
+};
+
+const get_sl_wait = (node, edges) => {
+  let next = get_transition_event(node, edges);
+  let t_e = next ? next.type.join(',') : '';
+  let res = {
+    Type: node.name,
+    TransitionEvent: t_e,
+    Next: next ? next.target.data.name : '',
+    End: node.data.is_end,
+  }
+  if (node.data.seconds) res['Seconds'] = parseInt(node.data.seconds);
+  if (node.data.timestamp) res['Timestamp'] = node.data.timestamp;
+  if (node.data.timestamp_path) res['TimestampPath'] = node.data.timestamp_path;
+  if (node.data.seconds_path) res['SecondsPath'] = node.data.seconds_path;
+  return res;
 };
 
 const get_catches = (node, edges) =>
   edges.filter(edge => is_catch_event(edge, node));
 
 const is_catch_event = (edge, node) =>
-  edge.source.data.name === node.data.name && edge.source.outputs.catch_events;
+  edge.source.data.name === node.data.name && edge.event.name === 'CatchEvent';
 
 const get_choices = (node, edges) =>
   edges.filter(edge => is_choice_event(edge, node));
 
 const is_choice_event = (edge, node) =>
-  edge.source.data.name === node.data.name && edge.source.outputs.choice_events;
+  edge.source.data.name === node.data.name && edge.event.name === 'ChoiceEvent';
 
 const get_transition_event = (node, edges) =>
   edges.find(edge => is_trans_event(edge, node));
 
 const is_trans_event = (edge, node) =>
   edge.source.data.name === node.data.name &&
-  edge.source.outputs.transition_event;
+  edge.event.name === 'TransitionEvent';
 
 const graph_list = graph =>
   Object.keys(graph.nodes).map(key => graph.nodes[key]);
@@ -101,6 +146,7 @@ function get_node_outputs(key, node, graph) {
       acc.push({
         source: node,
         target: target,
+        event: event,
         type: get_event_name(event),
       });
     }
