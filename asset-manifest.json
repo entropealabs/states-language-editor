@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/states-language-editor/static/css/main.d1bf1e66.chunk.css",
-    "main.js": "/states-language-editor/static/js/main.c7b9f975.chunk.js",
-    "main.js.map": "/states-language-editor/static/js/main.c7b9f975.chunk.js.map",
+    "main.css": "/states-language-editor/static/css/main.a610952b.chunk.css",
+    "main.js": "/states-language-editor/static/js/main.9845662a.chunk.js",
+    "main.js.map": "/states-language-editor/static/js/main.9845662a.chunk.js.map",
     "runtime~main.js": "/states-language-editor/static/js/runtime~main.012934cc.js",
     "runtime~main.js.map": "/states-language-editor/static/js/runtime~main.012934cc.js.map",
-    "static/js/2.35bf96bf.chunk.js": "/states-language-editor/static/js/2.35bf96bf.chunk.js",
-    "static/js/2.35bf96bf.chunk.js.map": "/states-language-editor/static/js/2.35bf96bf.chunk.js.map",
+    "static/js/2.af9f965c.chunk.js": "/states-language-editor/static/js/2.af9f965c.chunk.js",
+    "static/js/2.af9f965c.chunk.js.map": "/states-language-editor/static/js/2.af9f965c.chunk.js.map",
     "index.html": "/states-language-editor/index.html",
-    "precache-manifest.357260179ce3b00573efb1f9580583ef.js": "/states-language-editor/precache-manifest.357260179ce3b00573efb1f9580583ef.js",
+    "precache-manifest.419cd4b5531203f7f25db25ef63a51c8.js": "/states-language-editor/precache-manifest.419cd4b5531203f7f25db25ef63a51c8.js",
     "service-worker.js": "/states-language-editor/service-worker.js",
-    "static/css/main.d1bf1e66.chunk.css.map": "/states-language-editor/static/css/main.d1bf1e66.chunk.css.map"
+    "static/css/main.a610952b.chunk.css.map": "/states-language-editor/static/css/main.a610952b.chunk.css.map"
   }
 }
