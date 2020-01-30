@@ -3,11 +3,12 @@ import ReactRenderPlugin from 'rete-react-render-plugin';
 import ConnectionPlugin from 'rete-connection-plugin';
 import ContextMenuPlugin from 'rete-context-menu-plugin';
 import AreaPlugin from 'rete-area-plugin';
+import MinimapPlugin from 'rete-minimap-plugin';
 import { MyNode } from './Node';
 import { MyControl } from './Control';
 import graph from './test.json';
-import { editor_d3 } from './parser';
-import { doSetD3Graph } from './actions';
+import { editor_d3, editor_states_language } from './parser';
+import { doSetD3Graph, doSetStatesLanguageGraph } from './actions';
 import store from './store';
 
 var transition_socket = new Rete.Socket('Transition Event');
@@ -121,20 +122,25 @@ export default async function(container) {
   editor.use(ReactRenderPlugin, { component: MyNode });
   editor.use(ContextMenuPlugin);
   editor.use(AreaPlugin);
+  editor.use(MinimapPlugin);
 
   components.map(c => editor.register(c));
   editor.on(
     'process nodecreated noderemoved connectioncreated connectionremoved',
     async () => {
+      console.log('| Process |');
       let graph = editor.toJSON();
       let d3_graph = editor_d3(graph);
+      let states_language_graph = editor_states_language(graph);
       store.dispatch(doSetD3Graph(d3_graph));
+      store.dispatch(doSetStatesLanguageGraph(states_language_graph));
     }
   );
 
   editor.fromJSON(graph);
-
   editor.view.resize();
-  AreaPlugin.zoomAt(editor);
   editor.trigger('process');
+  setTimeout(function() {
+    AreaPlugin.zoomAt(editor);
+  }, 200);
 }

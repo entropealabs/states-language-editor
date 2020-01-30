@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import init from './editor';
 import Graph from './Graph';
+import JSONDisplay from './JSONDisplay';
 
 const drawerWidth = 240;
 
@@ -89,7 +90,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
   },
   fixedHeight: {
-    height: '90vh',
+    height: '70vh',
   },
 }));
 
@@ -119,10 +120,7 @@ function Homepage() {
           <Grid container spacing={3}>
             <Grid item xs={12} md={8} lg={8}>
               <Paper className={fixedHeightPaper}>
-                <div
-                  style={{ width: '100vw', height: '90vh' }}
-                  ref={el => init(el)}
-                />
+                <div ref={el => init(el)} />
               </Paper>
             </Grid>
             <Grid item xs={12} md={4} lg={4}>
@@ -131,7 +129,9 @@ function Homepage() {
               </Paper>
             </Grid>
             <Grid item xs={12}>
-              <Paper className={classes.paper}></Paper>
+              <Paper className={classes.paper}>
+                <JSONDisplay />
+              </Paper>
             </Grid>
           </Grid>
         </Container>

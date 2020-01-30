@@ -9151,6 +9151,13 @@ rete-context-menu-plugin@^0.5:
     lodash-es "^4.17.15"
     vue "^2.5.17"
 
+rete-minimap-plugin@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/rete-minimap-plugin/-/rete-minimap-plugin-0.3.1.tgz#5c0f8b8bdde8baa819f3f35c0446e4ebf0399071"
+  integrity sha512-B89MwDxz0NBngE9bkf0F9jI++Jn/wsOZll88Xoa7snbBAdziVgmHikroSjiMAWlzwSNmHk7Mzo8DmezsAz46Jg==
+  dependencies:
+    vue "^2.5.17"
+
 rete-react-render-plugin@^0.2:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/rete-react-render-plugin/-/rete-react-render-plugin-0.2.0.tgz#35e74383fc9c12c8a61fc54c74de43e85ac765f7"
