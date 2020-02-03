@@ -136,15 +136,6 @@
               "data": {}
             }
           ]
-        },
-        "catch_events": {
-          "connections": [
-            {
-              "node": 6,
-              "input": "event",
-              "data": {}
-            }
-          ]
         }
       },
       "position": [
@@ -185,33 +176,6 @@
         24.033977982152948
       ],
       "name": "ChoiceEvent"
-    },
-    "6": {
-      "id": 6,
-      "data": {
-        "errors": ":error"
-      },
-      "inputs": {
-        "event": {
-          "connections": [
-            {
-              "node": 4,
-              "output": "catch_events",
-              "data": {}
-            }
-          ]
-        }
-      },
-      "outputs": {
-        "next": {
-          "connections": []
-        }
-      },
-      "position": [
-        447.09480812641084,
-        211.40869581511004
-      ],
-      "name": "CatchEvent"
     },
     "7": {
       "id": 7,

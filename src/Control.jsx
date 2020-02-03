@@ -13,13 +13,13 @@ class TextControl extends Rete.Control {
     />
   );
 
-  constructor(emitter, key, node, readonly = false) {
+  constructor(emitter, key, node, default_value = '', readonly = false) {
     super(key);
     this.emitter = emitter;
     this.key = key;
     this.component = TextControl.component;
 
-    const initial = node.data[key] || '';
+    const initial = node.data[key] || default_value;
 
     node.data[key] = initial;
     this.props = {
@@ -29,7 +29,7 @@ class TextControl extends Rete.Control {
         this.setValue(v);
         this.emitter.trigger('process');
       },
-      placeholder: key
+      placeholder: key,
     };
   }
 

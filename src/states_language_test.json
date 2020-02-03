@@ -1,0 +1,62 @@
+{
+  "StartAt": "Start",
+  "States": {
+    "Start": {
+      "Type": "Task",
+      "Resource": "Screen:lookup_asset",
+      "TransitionEvent": ":submit",
+      "InputPath": "",
+      "OutputPath": "",
+      "ResourcePath": "",
+      "Next": "Lookup"
+    },
+    "Lookup": {
+      "Type": "Task",
+      "Resource": "Lookup:asset",
+      "TransitionEvent": ":success",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            ":not_found"
+          ],
+          "Next": "DisplayNotFound"
+        },
+        {
+          "ErrorEquals": [
+            ":error"
+          ],
+          "Next": "DisplayError"
+        }
+      ],
+      "Next": "DisplayAsset"
+    },
+    "DisplayAsset": {
+      "Type": "Task",
+      "Resource": "Screen:asset_display",
+      "TransitionEvent": "",
+      "End": true
+    },
+    "DisplayNotFound": {
+      "Type": "Task",
+      "Resource": "Screen:not_found",
+      "TransitionEvent": ":reset",
+      "Catch": [],
+      "InputPath": "",
+      "OutputPath": "",
+      "ResourcePath": "",
+      "Next": "Start",
+      "End": false
+    },
+    "DisplayError": {
+      "Type": "Task",
+      "Resource": "Screen:error",
+      "TransitionEvent": ":reset",
+      "Catch": [],
+      "InputPath": "",
+      "OutputPath": "",
+      "ResourcePath": "",
+      "Next": "Start",
+      "End": false
+    }
+  }
+}

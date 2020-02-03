@@ -9,9 +9,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import init from './editor';
+import { init } from './editor';
 import Graph from './Graph';
 import JSONDisplay from './JSONDisplay';
+import { useSelector } from 'react-redux';
 
 const drawerWidth = 240;
 
@@ -97,6 +98,9 @@ const useStyles = makeStyles(theme => ({
 function Homepage() {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const graph = useSelector(state => state.states_language_graph_editor);
+  const graph_loaded = useSelector(state => state.graph_loaded);
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -120,16 +124,22 @@ function Homepage() {
           <Grid container spacing={3}>
             <Grid item xs={12} md={8} lg={8}>
               <Paper className={fixedHeightPaper}>
-                <div ref={el => init(el)} />
+                <h2>Editor</h2>
+                {graph_loaded ? 
+                  <div ref={el => init(el, graph)}></div> :
+                  <div>Loading...</div>
+                }
               </Paper>
             </Grid>
             <Grid item xs={12} md={4} lg={4}>
               <Paper className={fixedHeightPaper}>
+                <h2>Graph</h2>
                 <Graph />
               </Paper>
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
+                <h2>JSON</h2>
                 <JSONDisplay />
               </Paper>
             </Grid>

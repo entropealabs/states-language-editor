@@ -1,6 +1,181 @@
+export const states_language_editor = graph => {
+  let id = 1;
+  let nodes = graph_list(graph.States);
+  let res = { id: 'states-language@0.1.0', nodes: {} };
+  res.nodes = nodes.reduce((acc, node) => {
+    acc[id.toString()] = {
+      id: id,
+      data: get_editor_data(node),
+      name: node.Type,
+      inputs: { start: { connections: [] } },
+      outputs: { transition_event: { connections: [] } },
+      position: [id * 100, id * 100],
+    };
+    id++;
+    return acc;
+  }, res.nodes);
+
+  res.nodes = create_edge_nodes(nodes, res.nodes, id);
+  return res;
+};
+
+const create_edge_nodes = (nodes, acc, id) => {
+  return nodes.reduce((acc, node) => {
+    if (node.Catch) {
+      acc = node.Catch.reduce((acc, cat) => {
+        let source = get_node_by_name(node.id, acc);
+        let target = get_node_by_name(cat.Next, acc);
+        acc[id.toString()] = editor_edge_node(
+          id,
+          'catch_events',
+          'start',
+          'CatchEvent',
+          cat.ErrorEquals.join(','),
+          source,
+          target
+        );
+        id++;
+        return acc;
+      }, acc);
+    }
+    if (node.Choices) {
+      acc = node.Choices.reduce((acc, ch) => {
+        let source = get_node_by_name(node.id, acc);
+        let target = get_node_by_name(ch.Next, acc);
+        acc[id.toString()] = editor_edge_node(
+          id,
+          'choice_events',
+          'start',
+          'ChoiceEvent',
+          ch.StringEquals,
+          source,
+          target
+        );
+        id++;
+        return acc;
+      }, acc);
+    }
+    if (node.Next) {
+      let source = get_node_by_name(node.id, acc);
+      let target = get_node_by_name(node.Next, acc);
+      acc[id.toString()] = editor_edge_node(
+        id,
+        'transition_event',
+        'start',
+        'TransitionEvent',
+        node.TransitionEvent,
+        source,
+        target
+      );
+      id++;
+    }
+    return acc;
+  }, acc);
+};
+
+const editor_edge_node = (id, input, output, name, event, source, target) => {
+  source.outputs = source.outputs || {};
+  source.outputs[input] = source.outputs[input] || {};
+  source.outputs[input].connections = source.outputs[input].connections || [];
+  source.outputs[input].connections.push({
+    node: id,
+    input: 'event',
+    data: {},
+  });
+  target.inputs = target.inputs || {};
+  target.inputs[output] = target.inputs[output] || {};
+  target.inputs[output].connections = target.inputs[output].connections || [];
+  target.inputs[output].connections.push({
+    node: id,
+    output: 'next',
+    data: {},
+  });
+  return {
+    name: name,
+    id: id,
+    position: [id * 100, id * 100],
+    data: {
+      event: event,
+    },
+    inputs: {
+      event: {
+        connections: [
+          {
+            node: source.id,
+            output: input,
+            data: {},
+          },
+        ],
+      },
+    },
+    outputs: {
+      next: {
+        connections: [
+          {
+            node: target.id,
+            input: output,
+            data: {},
+          },
+        ],
+      },
+    },
+  };
+};
+
+const get_node_by_name = (name, nodes) => {
+  for (let id in nodes) {
+    if (nodes[id].data.name === name) return nodes[id];
+  }
+};
+
+const get_editor_data = node => {
+  switch (node.Type) {
+    case 'Task':
+      return get_editor_data_task(node);
+    case 'Choice':
+      return get_editor_data_choice(node);
+    case 'Wait':
+      return get_editor_data_wait(node);
+    default:
+      return {};
+  }
+};
+
+const get_editor_data_task = node => {
+  return {
+    resource: node.Resource,
+    name: node.id,
+    input_path: node.InputPath,
+    output_path: node.OutputPath,
+    resource_path: node.ResourcePath,
+    is_end: node.End ? node.End : false,
+  };
+};
+
+const get_editor_data_choice = node => {
+  return {
+    resource: node.Resource,
+    name: node.id,
+    input_path: node.InputPath,
+    output_path: node.OutputPath,
+    is_end: node.End ? node.End : false,
+  };
+};
+
+const get_editor_data_wait = node => {
+  return {
+    name: node.id,
+    seconds: node.Seconds,
+    seconds_path: node.SecondsPath,
+    timestamp: node.Timestamp,
+    timestamp_path: node.TimestampPath,
+    is_end: node.End ? node.End : false,
+  };
+};
+
 const to_states_language = (nodes, edges) => {
-  return nodes.reduce((acc, node) => { 
-    acc[node.data.name] = get_states_language_state(node, edges)
+  return nodes.reduce((acc, node) => {
+    acc[node.data.name] = get_states_language_state(node, edges);
     return acc;
   }, {});
 };
@@ -22,8 +197,8 @@ const get_sl_task = (node, edges) => {
   let next = get_transition_event(node, edges);
   let t_e = next ? next.type.join(',') : '';
   let catches = get_catches(node, edges).map(cat => ({
-      ErrorEquals: cat.type,
-      Next: cat.target.data.name,
+    ErrorEquals: cat.type,
+    Next: cat.target.data.name,
   }));
   return {
     Type: node.name,
@@ -35,13 +210,13 @@ const get_sl_task = (node, edges) => {
     ResourcePath: node.data.resource_path,
     Next: next ? next.target.data.name : '',
     End: node.data.is_end,
-  }
+  };
 };
 
 const get_sl_choice = (node, edges) => {
   let choices = get_choices(node, edges).map(choice => ({
-      StringEquals: choice.type.join(","),
-      Next: choice.target.data.name,
+    StringEquals: choice.type.join(', '),
+    Next: choice.target.data.name,
   }));
   return {
     Type: node.name,
@@ -49,7 +224,7 @@ const get_sl_choice = (node, edges) => {
     Choices: choices,
     InputPath: node.data.input_path,
     OutputPath: node.data.output_path,
-  }
+  };
 };
 
 const get_sl_wait = (node, edges) => {
@@ -60,7 +235,7 @@ const get_sl_wait = (node, edges) => {
     TransitionEvent: t_e,
     Next: next ? next.target.data.name : '',
     End: node.data.is_end,
-  }
+  };
   if (node.data.seconds) res['Seconds'] = parseInt(node.data.seconds);
   if (node.data.timestamp) res['Timestamp'] = node.data.timestamp;
   if (node.data.timestamp_path) res['TimestampPath'] = node.data.timestamp_path;
@@ -87,8 +262,12 @@ const is_trans_event = (edge, node) =>
   edge.source.data.name === node.data.name &&
   edge.event.name === 'TransitionEvent';
 
-const graph_list = graph =>
-  Object.keys(graph.nodes).map(key => graph.nodes[key]);
+const graph_list = nodes =>
+  Object.keys(nodes).reduce((acc, key) => {
+    nodes[key].id = key;
+    acc.push(nodes[key]);
+    return acc;
+  }, []);
 
 const graph_states = graph_list =>
   graph_list.filter(node => !node.name.endsWith('Event'));
@@ -118,7 +297,7 @@ const to_d3_edges = (graph_edges, nodes) =>
   });
 
 export function editor_states_language(graph) {
-  let n = graph_list(graph);
+  let n = graph_list(graph.nodes);
   let state_nodes = graph_states(n);
   let state_edges = graph_edges(state_nodes, graph);
   return {
@@ -128,7 +307,7 @@ export function editor_states_language(graph) {
 }
 
 export function editor_d3(graph) {
-  let n = graph_list(graph);
+  let n = graph_list(graph.nodes);
   let state_nodes = graph_states(n);
   let nodes = to_d3_nodes(state_nodes);
   let state_edges = graph_edges(state_nodes, graph);

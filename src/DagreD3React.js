@@ -43,15 +43,10 @@ function DagreD3({ width, height, edges, nodes, onClick }) {
 
     render(inner, g);
 
-    var initialScale = 0.8;
-    svg.call(
-      zoom.transform,
-      d3.zoomIdentity
-        .translate((svg.attr('width') - g.graph().width * initialScale) / 2, 20)
-        .scale(initialScale)
-    );
+    var initialScale = 0.7;
+    svg.call(zoom.transform, d3.zoomIdentity.scale(initialScale));
 
-    svg.attr('height', g.graph().height * initialScale + 20);
+    // svg.attr('height', g.graph().height * initialScale + 20);
 
     svg.selectAll('.dagre-d3 .node').on('click', id => {
       g.nodes().forEach(v => g.node(v).elem.classList.remove('selected'));

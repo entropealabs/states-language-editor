@@ -2,12 +2,16 @@ import Rete from 'rete';
 import ReactRenderPlugin from 'rete-react-render-plugin';
 import ConnectionPlugin from 'rete-connection-plugin';
 import ContextMenuPlugin from 'rete-context-menu-plugin';
+import AutoArrangePlugin from 'rete-auto-arrange-plugin';
 import AreaPlugin from 'rete-area-plugin';
 import MinimapPlugin from 'rete-minimap-plugin';
 import { MyNode } from './Node';
 import { TextControl, BooleanControl, IntegerControl } from './Control';
-import graph from './test.json';
-import { editor_d3, editor_states_language } from './parser';
+import {
+  editor_d3,
+  states_language_editor,
+  editor_states_language,
+} from './parser';
 import { doSetD3Graph, doSetStatesLanguageGraph } from './actions';
 import store from './store';
 
@@ -124,7 +128,7 @@ class CatchEventComponent extends Rete.Component {
   builder(node) {
     var inp = new Rete.Input('event', '=', catch_socket, true);
     var out = new Rete.Output('next', 'Next', next_socket);
-    var ctrl = new TextControl(this.editor, 'errors', node);
+    var ctrl = new TextControl(this.editor, 'event', node);
     return node
       .addInput(inp)
       .addOutput(out)
@@ -140,7 +144,7 @@ class ChoiceEventComponent extends Rete.Component {
   builder(node) {
     var inp = new Rete.Input('event', '=', choice_socket);
     var out = new Rete.Output('next', 'Next', next_socket);
-    var ctrl = new TextControl(this.editor, 'events', node);
+    var ctrl = new TextControl(this.editor, 'event', node);
     return node
       .addInput(inp)
       .addOutput(out)
@@ -148,7 +152,8 @@ class ChoiceEventComponent extends Rete.Component {
   }
 }
 
-export default async function(container) {
+export const init = async (container, graph) => {
+  if (!container) return;
   var components = [
     new TaskComponent(),
     new ChoiceComponent(),
@@ -164,14 +169,14 @@ export default async function(container) {
   editor.use(ContextMenuPlugin);
   editor.use(AreaPlugin);
   editor.use(MinimapPlugin);
+  editor.use(AutoArrangePlugin, { margin: { x: 50, y: 50 }, depth: 0 });
 
   components.map(c => editor.register(c));
+
   editor.on(
     'process nodecreated noderemoved connectioncreated connectionremoved',
     async () => {
-      console.log('| Process |');
       let graph = editor.toJSON();
-      console.log(graph);
       let d3_graph = editor_d3(graph);
       let states_language_graph = editor_states_language(graph);
       store.dispatch(doSetD3Graph(d3_graph));
@@ -179,10 +184,12 @@ export default async function(container) {
     }
   );
 
-  editor.fromJSON(graph);
-  editor.view.resize();
-  editor.trigger('process');
+  editor.fromJSON(states_language_editor(graph));
+
   setTimeout(function() {
+    editor.view.resize();
+    editor.trigger('process');
+    editor.trigger('arrange');
     AreaPlugin.zoomAt(editor);
   }, 200);
-}
+};

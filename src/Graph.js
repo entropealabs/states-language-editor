@@ -10,8 +10,8 @@ function Graph() {
       <DagreD3
         edges={graph.edges}
         nodes={graph.nodes}
-        width="300"
-        height="100"
+        width="100%"
+        height="60vh"
       />
     </div>
   );

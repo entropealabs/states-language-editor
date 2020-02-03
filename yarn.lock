@@ -9138,6 +9138,11 @@ rete-area-plugin@^0.2:
   resolved "https://registry.yarnpkg.com/rete-area-plugin/-/rete-area-plugin-0.2.1.tgz#0afe4581baf99c36c904d08e4f0a835ed6604d86"
   integrity sha512-MOeQRmSC/gjkZIMo0fNuomzunRplALqd86V+jSzuhBYchCw0wshv2/iXu4xRxVZkw9r1HpZxlz9gLkbatCbXMw==
 
+rete-auto-arrange-plugin@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/rete-auto-arrange-plugin/-/rete-auto-arrange-plugin-0.4.0.tgz#abdff5441c2159a4140ed4be166a307478feda08"
+  integrity sha512-s+JA1Xe8KaKGj9ozm0Er2gb6b5SfDOo6jtkBY4UMrt6imBkrwGwliwTUx9LG6zzkSlCUlFVcHNY1NBNJmPCQxQ==
+
 rete-connection-plugin@^0.9:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/rete-connection-plugin/-/rete-connection-plugin-0.9.0.tgz#3a6df36f55493a5c2ea021ae3147a0f0a6ada6ed"
