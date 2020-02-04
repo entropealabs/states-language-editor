@@ -1,6 +1,6 @@
 export const states_language_editor = graph => {
   let id = 1;
-  let nodes = graph_list(graph.States);
+  let nodes = graph_list(graph);
   let res = { id: 'states-language@0.1.0', nodes: {} };
   res.nodes = nodes.reduce((acc, node) => {
     acc[id.toString()] = {
@@ -300,10 +300,7 @@ export function editor_states_language(graph) {
   let n = graph_list(graph.nodes);
   let state_nodes = graph_states(n);
   let state_edges = graph_edges(state_nodes, graph);
-  return {
-    StartAt: 'Test',
-    States: to_states_language(state_nodes, state_edges),
-  };
+  return to_states_language(state_nodes, state_edges);
 }
 
 export function editor_d3(graph) {

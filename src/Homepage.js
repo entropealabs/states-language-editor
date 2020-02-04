@@ -139,7 +139,7 @@ function Homepage() {
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <h2>JSON</h2>
+                <h2>JSON</h2> 
                 <JSONDisplay />
               </Paper>
             </Grid>

@@ -1,15 +1,17 @@
 import React from 'react';
+import TextField from '@material-ui/core/TextField';
 import Rete from 'rete';
 
 class TextControl extends Rete.Control {
   static component = ({ value, onChange, placeholder }) => (
-    <input
+    <TextField
       value={value}
-      placeholder={placeholder}
+      label={placeholder}
       ref={ref => {
         ref && ref.addEventListener('pointerdown', e => e.stopPropagation());
       }}
       onChange={e => onChange(e.target.value)}
+      variant="outlined"
     />
   );
 
@@ -42,14 +44,15 @@ class TextControl extends Rete.Control {
 
 class IntegerControl extends Rete.Control {
   static component = ({ value, onChange, placeholder }) => (
-    <input
+    <TextField
       type="number"
       value={value}
-      placeholder={placeholder}
+      label={placeholder}
       ref={ref => {
         ref && ref.addEventListener('pointerdown', e => e.stopPropagation());
       }}
       onChange={e => onChange(e.target.value)}
+      variant="outlined"
     />
   );
 

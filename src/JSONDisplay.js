@@ -1,21 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   doSetStatesLanguageGraph,
+  doSetStatesLanguageGraphEditor,
+  doSetStartAt,
+  doSetComment,
   doSetGraphLoaded,
-  doSetStatesLanguageEditorGraph,
 } from './actions';
 import Button from '@material-ui/core/Button';
 import store from './store';
 
 function JSONDisplay() {
   const graph = useSelector(state => state.states_language_graph);
+  const start_at = useSelector(state => state.start_at);
+  const comment = useSelector(state => state.comment);
+  const [display, set_display] = useState({
+    StartAt: start_at, 
+    Comment: comment, 
+    States: graph,
+  })
+
+  useEffect(() => {
+    set_display({StartAt: start_at, Comment: comment, States: graph});
+  }, [graph, start_at, comment])
 
   const onChange = e => {
     try {
-      console.log(e.target.value);
       let obj = JSON.parse(e.target.value);
-      store.dispatch(doSetStatesLanguageGraph(obj));
+      set_display(obj);
     } catch (e) {
       console.log(e);
       console.log('JSON is still invalid');
@@ -25,10 +37,11 @@ function JSONDisplay() {
 
   const update = e => {
     store.dispatch(doSetGraphLoaded(false));
-    setTimeout(function() {
-      store.dispatch(doSetStatesLanguageEditorGraph());
-      store.dispatch(doSetGraphLoaded(true));
-    }, 500);
+    store.dispatch(doSetStatesLanguageGraph(display.States));
+    store.dispatch(doSetStartAt(display.StartAt));
+    store.dispatch(doSetComment(display.Comment));
+    store.dispatch(doSetStatesLanguageGraphEditor());
+    setTimeout(() => store.dispatch(doSetGraphLoaded(true)), 500);
   };
 
   return (
@@ -38,9 +51,13 @@ function JSONDisplay() {
       </Button>
       <br />
       <textarea
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck="false"
         cols="100"
         rows="50"
-        value={JSON.stringify(graph, undefined, 2)}
+        value={JSON.stringify(display, undefined, 2)}
         onChange={onChange}
       />
       <br />
